@@ -3,13 +3,14 @@ package com.infotainment.radio.ui
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.infotainment.radio.R
 import com.infotainment.radio.databinding.ActivityMainBinding
 import com.infotainment.radio.model.AudioSource
 import com.infotainment.radio.model.BluetoothConnectionState
 import com.infotainment.radio.model.RadioBand
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 /**
@@ -66,53 +67,55 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeState() {
         lifecycleScope.launch {
-            viewModel.activeSource.collect { source ->
-                updateSourceUI(source)
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModel.radioState.collect { state ->
-                binding.tvFrequency.text = when (state.band) {
-                    RadioBand.FM -> String.format("%.1f FM", state.currentStation?.frequency ?: 87.5)
-                    RadioBand.AM -> String.format("%.0f AM", state.currentStation?.frequency ?: 530.0)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.activeSource.collect { source ->
+                        updateSourceUI(source)
+                    }
                 }
-                binding.tvStationName.text = state.currentStation?.stationName ?: ""
-                binding.tvSignalStrength.text = "Signal: ${state.currentStation?.signalStrength ?: 0}%"
-                binding.volumeSeekBar.progress = state.volume
-                binding.btnMute.text = if (state.isMuted) "Unmute" else "Mute"
-                binding.tvScanStatus.text = if (state.isScanning) "Scanning..." else ""
-            }
-        }
 
-        lifecycleScope.launch {
-            viewModel.bluetoothState.collect { state ->
-                binding.tvBtDevice.text = state.connectedDevice?.name ?: "No device"
-                binding.tvBtStatus.text = when (state.connectionState) {
-                    BluetoothConnectionState.DISCONNECTED -> "Disconnected"
-                    BluetoothConnectionState.CONNECTING -> "Connecting..."
-                    BluetoothConnectionState.CONNECTED -> "Connected"
-                    BluetoothConnectionState.PLAYING -> "Playing"
-                    BluetoothConnectionState.PAUSED -> "Paused"
+                launch {
+                    viewModel.radioState.collect { state ->
+                        binding.tvFrequency.text = when (state.band) {
+                            RadioBand.FM -> String.format("%.1f FM", state.currentStation?.frequency ?: 87.5)
+                            RadioBand.AM -> String.format("%.0f AM", state.currentStation?.frequency ?: 530.0)
+                        }
+                        binding.tvStationName.text = state.currentStation?.stationName ?: ""
+                        binding.tvSignalStrength.text = "Signal: ${state.currentStation?.signalStrength ?: 0}%"
+                        binding.volumeSeekBar.progress = state.volume
+                        binding.btnMute.text = if (state.isMuted) "Unmute" else "Mute"
+                        binding.tvScanStatus.text = if (state.isScanning) "Scanning..." else ""
+                    }
                 }
-            }
-        }
 
-        lifecycleScope.launch {
-            viewModel.mediaMetadata.collect { metadata ->
-                binding.tvMediaTitle.text = metadata.title ?: ""
-                binding.tvMediaArtist.text = metadata.artist ?: ""
+                launch {
+                    viewModel.bluetoothState.collect { state ->
+                        binding.tvBtDevice.text = state.connectedDevice?.name ?: "No device"
+                        binding.tvBtStatus.text = when (state.connectionState) {
+                            BluetoothConnectionState.DISCONNECTED -> "Disconnected"
+                            BluetoothConnectionState.CONNECTING -> "Connecting..."
+                            BluetoothConnectionState.CONNECTED -> "Connected"
+                            BluetoothConnectionState.PLAYING -> "Playing"
+                            BluetoothConnectionState.PAUSED -> "Paused"
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.mediaMetadata.collect { metadata ->
+                        binding.tvMediaTitle.text = metadata.title ?: ""
+                        binding.tvMediaArtist.text = metadata.artist ?: ""
+                    }
+                }
             }
         }
     }
 
     private fun updateSourceUI(source: AudioSource) {
-        // Highlight active source button
         binding.btnFm.isSelected = source == AudioSource.FM_RADIO
         binding.btnAm.isSelected = source == AudioSource.AM_RADIO
         binding.btnBluetooth.isSelected = source == AudioSource.BLUETOOTH
 
-        // Show/hide panels based on source
         val isRadio = source == AudioSource.FM_RADIO || source == AudioSource.AM_RADIO
         binding.radioPanel.visibility = if (isRadio) android.view.View.VISIBLE else android.view.View.GONE
         binding.bluetoothPanel.visibility = if (source == AudioSource.BLUETOOTH) android.view.View.VISIBLE else android.view.View.GONE

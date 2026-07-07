@@ -35,17 +35,5 @@
             </intent-filter>
         </activity>
 
-        <!-- Radio Tuner Service -->
-        <service
-            android:name=".service.RadioTunerService"
-            android:exported="false"
-            android:foregroundServiceType="mediaPlayback" />
-
-        <!-- Bluetooth Audio Service -->
-        <service
-            android:name=".service.BluetoothAudioService"
-            android:exported="false"
-            android:foregroundServiceType="connectedDevice" />
-
     </application>
 </manifest>

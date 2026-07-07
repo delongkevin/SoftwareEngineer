@@ -7,7 +7,9 @@ import com.infotainment.radio.model.RadioState
 import com.infotainment.radio.model.RadioStation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -123,6 +125,7 @@ class RadioTunerService(private val tunerHAL: RadioTunerHAL) {
     }
 
     suspend fun shutdown() {
+        serviceScope.cancel()
         tunerHAL.shutdown()
     }
 

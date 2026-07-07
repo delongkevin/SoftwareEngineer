@@ -16,7 +16,9 @@ import com.infotainment.radio.service.RadioTunerService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel managing the infotainment radio UI state.
@@ -157,8 +159,10 @@ class RadioViewModel(
     override fun onCleared() {
         super.onCleared()
         viewModelScope.launch {
-            radioService.shutdown()
-            bluetoothService.shutdown()
+            withContext(NonCancellable) {
+                radioService.shutdown()
+                bluetoothService.shutdown()
+            }
         }
     }
 

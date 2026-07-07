@@ -35,7 +35,7 @@ const SIMULATED_AM_STATIONS: StationResult[] = [
   { frequency: 1490, band: 'am', signalStrength: 45, stationName: 'Oldies AM' },
 ];
 
-let currentStationIndex = 0;
+const currentStationIndex: Record<string, number> = { fm: 0, am: 0 };
 
 export const RadioService = {
   /**
@@ -47,9 +47,9 @@ export const RadioService = {
     //   .then(res => res.json());
 
     const stations = band === 'fm' ? SIMULATED_FM_STATIONS : SIMULATED_AM_STATIONS;
-    currentStationIndex = (currentStationIndex + 1) % stations.length;
+    currentStationIndex[band] = (currentStationIndex[band] + 1) % stations.length;
     await simulateDelay(300);
-    return stations[currentStationIndex];
+    return stations[currentStationIndex[band]];
   },
 
   /**
@@ -57,9 +57,9 @@ export const RadioService = {
    */
   async seekDown(band: 'fm' | 'am'): Promise<StationResult | null> {
     const stations = band === 'fm' ? SIMULATED_FM_STATIONS : SIMULATED_AM_STATIONS;
-    currentStationIndex = currentStationIndex > 0 ? currentStationIndex - 1 : stations.length - 1;
+    currentStationIndex[band] = currentStationIndex[band] > 0 ? currentStationIndex[band] - 1 : stations.length - 1;
     await simulateDelay(300);
-    return stations[currentStationIndex];
+    return stations[currentStationIndex[band]];
   },
 
   /**
