@@ -1,0 +1,271 @@
+:root {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #808080;
+  --accent: #00d4ff;
+  --accent-dark: #0f3460;
+  --btn-active: #00d4ff;
+  --btn-inactive: #2a2a4a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 16px;
+}
+
+/* Source Selection Bar */
+.source-bar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.source-btn {
+  padding: 10px 32px;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.source-btn:hover {
+  background: var(--accent-dark);
+}
+
+.source-btn.active {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* Content Area */
+.content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Radio Panel */
+.radio-panel {
+  text-align: center;
+}
+
+.frequency-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.frequency {
+  font-size: 64px;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+.station-name {
+  font-size: 24px;
+  color: var(--text-secondary);
+}
+
+.signal {
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+
+.scanning {
+  font-size: 14px;
+  color: var(--accent);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.radio-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+/* Bluetooth Panel */
+.bluetooth-panel {
+  text-align: center;
+}
+
+.bt-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.bt-device {
+  font-size: 28px;
+}
+
+.bt-status {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.media-info {
+  margin-bottom: 24px;
+}
+
+.media-title {
+  font-size: 22px;
+  display: block;
+}
+
+.media-artist {
+  font-size: 16px;
+  color: var(--text-secondary);
+  display: block;
+  margin-top: 4px;
+}
+
+.bt-media-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.bt-connection-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Shared Controls */
+.control-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: var(--btn-inactive);
+  color: var(--text-primary);
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.control-btn:hover {
+  background: var(--accent-dark);
+}
+
+.scan-btn,
+.play-btn,
+.pause-btn {
+  background: var(--accent);
+  color: var(--bg-primary);
+  font-weight: bold;
+}
+
+.connect-btn,
+.disconnect-btn {
+  padding: 10px 24px;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.connect-btn:hover {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+.disconnect-btn:hover {
+  background: #ff4444;
+  border-color: #ff4444;
+}
+
+.connect-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Volume Bar */
+.volume-bar {
+  padding: 12px 0;
+  border-top: 1px solid var(--accent-dark);
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mute-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: var(--btn-inactive);
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.mute-btn:hover {
+  background: var(--accent-dark);
+}
+
+.volume-slider {
+  flex: 1;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--btn-inactive);
+  border-radius: 3px;
+  outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+.volume-value {
+  font-size: 14px;
+  color: var(--text-secondary);
+  min-width: 40px;
+  text-align: right;
+}

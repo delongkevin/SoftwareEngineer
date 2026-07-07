@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark automotive theme colors -->
+    <color name="background_dark">#FF1A1A2E</color>
+    <color name="surface_dark">#FF16213E</color>
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#FFB0B0B0</color>
+    <color name="text_tertiary">#FF808080</color>
+    <color name="accent">#FF00D4FF</color>
+    <color name="accent_secondary">#FF0F3460</color>
+    <color name="button_active">#FF00D4FF</color>
+    <color name="button_inactive">#FF2A2A4A</color>
+    <color name="seekbar_track">#FF333355</color>
+    <color name="seekbar_thumb">#FF00D4FF</color>
+</resources>
